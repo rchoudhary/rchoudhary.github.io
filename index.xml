@@ -1,0 +1,15 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Null Pointers</title>
+    <link>https://rchoudhary.github.io/</link>
+    <description>Recent content on Null Pointers</description>
+    <generator>Hugo - gohugo.io</generator>
+    <language>en</language>
+    <contact></contact>
+    <copyright></copyright>
+    
+        <atom:link href="https://rchoudhary.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>
