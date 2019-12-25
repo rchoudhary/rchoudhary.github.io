@@ -16,6 +16,8 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono|Source Code Pro|Source+Code+Pro&display=swap" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,100italic,300italic,400italic,500italic,500,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -32,27 +34,23 @@
     <nav class="nav">
       <div class="nav-left">
         <a class="nav-item" id="site-title" href="https://rchoudhary.github.io">
-            <h1 style="font-size: 36px;">Null Pointers</h1>
+            <h1>Null Pointers</h1>
         </a>
       </div>
       <div class="nav-right">
         <nav class="nav-item level is-mobile"><a class="level-item" aria-label="github" href='https://github.com/rchoudhary' target='_blank' rel='noopener'>
-            <span class="icon">
-              <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
+              <span class="icon">
+                <i class><svg viewbox='0 0 24 24' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' aria-hidden='true'>
     
     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
     
   </svg></i>
-            </span>
-          </a></nav>
+              </span>
+            </a></nav>
       </div>
     </nav>
 
-    <nav class="nav">
-      
-
-      
-    </nav>
+    
 
   </div>
 </section>
@@ -69,7 +67,7 @@
     
     <div class="content" id="content">
       <h1 id="summary">Summary</h1>
-      While building a 555 astable timer circuit, I noticed that the value of a seemingly unrelated resistor was actually of crucial importance to the overall functionality. Using simple circuit analysis and simulation, I got to the bottom of why exactly this resistor matters. It turns out that the resistor helps control the asymptotic behavior of a capacitor that in turn controls the timing behavior of the 555.
+      <p>While building a 555 astable timer circuit, I noticed that the value of a seemingly unrelated resistor was actually of crucial importance to the overall functionality. Using simple circuit analysis and simulation, I got to the bottom of why exactly this resistor matters.</p>
       <h1 id="toc">Table of Contents</h1>
       <nav id="TableOfContents">
 <ul>
@@ -78,8 +76,9 @@
 <li><a href="#debugging-the-circuit">Debugging the Circuit</a></li>
 <li><a href="#a-first-attempt-at-a-fix">A First Attempt at a Fix</a></li>
 <li><a href="#why-is-charging-quicker-than-discharging">Why Is Charging Quicker Than Discharging?</a></li>
-<li><a href="#a-naive-fix">A Naive Fix</a></li>
-<li><a href="#a-better-fix">A Better Fix</a></li>
+<li><a href="#the-fix">The Fix</a></li>
+<li><a href="#another-fix">Another Fix</a></li>
+<li><a href="#the-final-circuit">The Final Circuit</a></li>
 <li><a href="#conclusion">Conclusion</a></li>
 </ul>
 </nav>
@@ -91,7 +90,7 @@
 
 <p>According to <a href="https://www.electronics-tutorials.ws/waveforms/555_oscillator.html">this tutorial</a>, all I needed to do was build this circuit:</p>
 
-<p><img src="https://www.electronics-tutorials.ws/wp-content/uploads/2018/05/waveforms-tim58a.gif#c" alt="555 50% duty cycle oscillator" /></p>
+<p><img src="/images/555-R1/555-circuit_padded.png#c" alt="555 50% duty cycle oscillator circuit" /></p>
 
 <div class="figure-caption">Reference: <a href="https://www.electronics-tutorials.ws/waveforms/555_oscillator.html">Electronics Tutorials</a></div>
 
@@ -99,7 +98,7 @@
 
 <p>To get any particular frequency $f$, I simply needed to utilize the formula</p>
 
-<p>$$ f=\frac{1}{0.693(2R_2)C_1}\,\mathrm{ Hz} $$</p>
+<p>$$ f=\frac{1}{0.693(2R_2)C_1}\,\text{ Hz} $$</p>
 
 <p>Using my impeccable algebra skills, I figured out that to get a $2 \text{ Hz}$ wave I needed</p>
 
@@ -107,13 +106,13 @@
 
 <p>I looked through my electronics parts to see what values capacitors and resistors I had:</p>
 
-<p><img src="/images/555-R1/res_values.png#c" height="270px"/>
-<img src="/images/555-R1/cap_values.png#c" height="270px"/>
-<div class="figure-caption">The resistors and capacitors I had lying around</div></p>
+<p><img src="/images/555-R1/res_values_padded.png#c" alt="available resistor values" />
+<img src="/images/555-R1/cap_values.png#c" alt="available capacitor values" />
+<div class="figure-caption">Can you spot the manufacturer&rsquo;s typo in the capacitor values?</div></p>
 
 <p>Just from eyeballing it, a $330\text{ nF}$ capacitor and a $1\text{ MΩ}$ resistor would do the trick. In fact, if we plug in those values, we get $f \approx 2.186\text{ Hz}$. Good enough!</p>
 
-<p>For $C_2$, I didn&rsquo;t have a $0.01\text{ µF}$ capacitor, but I did have a $0.1\text{ µF}$ capacitor. It&rsquo;s just there to stabilize the voltage on the <code>CONTROL</code> pin, so also good enough!</p>
+<p>For $C_2$, I didn&rsquo;t have a $0.01\text{ µF}$ capacitor, but I did have a $0.1\text{ µF}$ capacitor. $C_2$ is just there to stabilize the voltage on the <code>CONTROL</code> pin, so also good enough!</p>
 
 <p>The question now was what to do about $R_1$. How big or small should it be? The tutorial doesn&rsquo;t say much:</p>
 
@@ -121,24 +120,27 @@
 <p>Note that resistor R1 needs to be sufficiently high enough to ensure it does not interfere with the charging of the capacitor to produce the required 50% duty cycle</p>
 </blockquote>
 
-<p>Is $100\text{ kΩ}$ &ldquo;sufficiently high enough?&rdquo; It seemed pretty big to me, and I mean that&rsquo;s what the picture used anyways. I went ahead built the circuit (after quite a bit of labor) to test it out:</p>
+<p>Is $100\text{ kΩ}$ &ldquo;sufficiently high enough?&rdquo; It seemed pretty big to me, and I mean that&rsquo;s what the picture used anyways. I went ahead built the circuit to test it out:</p>
 
-<p><img src="/images/555-R1/555_100k.jpg#c" height="300px"/>
-<div class="figure-caption">Pretty good lookin&rsquo; huh?</div></p>
+<p><img src="/images/555-R1/555_100k.jpg#c" alt="555 astable circuit using 100 kilo ohms for R1" /></p>
 
 <p>I powered it up, but whenever I turned the circuit on, the LED would flash briefly and then never turn on again. This would happen every time I connected the circuit to power:</p>
 
-<p><img src="/images/555-R1/555_100k_animation.gif#c" height="325px"/>
-<div class="figure-caption">Kind of a lame circuit...</div></p>
+<p><img src="/images/555-R1/555_100k_animation.gif#c" alt="demonstration of 555 astable circuit using 100 kilo ohms for R1" />
+<div class="figure-caption">I suppose I could create a $2\text{ Hz}$ wave by just plugging and unplugging the power manually</div></p>
 
 <p>I double- and triple-checked the wiring, but couldn&rsquo;t find anything wrong! I figured just mindlessly quadruple-checking was gonna be useless. I needed to Get Smart™️</p>
 
 <h1 id="background-reading">Background Reading</h1>
 
-<p>I&rsquo;m gonna offload the work of explaining how the astable configuration of a 555 works to this guy&rsquo;s video. The relevant part starts at 6:54 (maybe watch at 1.5x speed).</p>
+<p>I&rsquo;m gonna offload the work of explaining how the astable configuration of a 555 works to this person&rsquo;s video. The relevant part starts at 6:54 (maybe watch at 1.5x speed).</p>
 
-<div style="text-align: center;">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/i0SNb__dkYI?rel=0&amp;start=414" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<div style="width: 100%;">
+    <div style="width: 75%; margin-left:auto; margin-right:auto">
+        <div class="video-wrapper" style="text-align: center;">
+            <iframe src="https://www.youtube.com/embed/i0SNb__dkYI?rel=0&amp;start=414" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
 </div>
 
 <h1 id="debugging-the-circuit">Debugging the Circuit</h1>
@@ -147,159 +149,203 @@
 
 <p>In LTSpice I created the schematic for my circuit:</p>
 
-<p><img src="/images/555-R1/schematic.png#c" height="350px"/></p>
+<p><img src="/images/555-R1/schematic.png#c" alt="schematic of 555 astable circuit using 100 kilo ohms for R1" /></p>
 
-<p>I then simulated it for a second and got the following results. The blue line is the voltage at the <code>OUT</code> pin and the green line is the voltage across the capacitor, i.e. the voltage at the <code>THRESHOLD</code> pin.</p>
+<p>I then simulated it and got the following results. The blue line is the voltage at the <code>OUT</code> pin and the green line is the voltage across the capacitor, i.e. the voltage at the <code>THRESHOLD</code> pin.</p>
 
-<p><img src="/images/555-R1/graph_100k.png#c" height="400px"/>
+<p><img src="/images/555-R1/graph_100k.png#c" alt="simulation of 555 astable circuit using 100 kilo ohms for R1" />
 <div class="figure-caption">The <code>OUT</code> pin goes high for just a bit then turns off, never to turn on again</div></p>
 
 <p>After close inspection, I was curious as to why the capacitor topped out at $4.5\text{ V}$. After all, it&rsquo;s connected to the $5\text{ V}$ supply, so it should asymptotically approach $5\text{ V}$ right?</p>
 
-<p>The trick was to think of the circuit more like this:</p>
+<p>The trick was to think of the circuit like this:</p>
 
-<p><img src="/images/555-R1/C1_circuit.png#c" height="250px"/>
-<div class="figure-caption">I hand draw my circuits &lsquo;cause I think it adds a certain charm</div></p>
+<p><img src="/images/555-R1/C1_circuit.png#c" alt="circuit redrawn to put focus on C1" />
+<div class="figure-caption">I like to hand draw my circuit diagrams &lsquo;cause I think it adds a certain charm</div></p>
 
-<p>If there&rsquo;s one thing my undergrad degree taught me, it&rsquo;s recognizing voltage dividers, and boy howdy, $R_1$ and $R_2$ kinda look like one! From there it&rsquo;s fairly straightforward to see what the issue is:</p>
+<p>If there&rsquo;s one thing my undergrad degree taught me, it&rsquo;s recognizing <strong>voltage dividers</strong>, and boy howdy, $R_1$ and $R_2$ sure look like one! From there it was fairly straightforward to see what the issue was:</p>
 
 <p><span class="num-circle">1</span>$C_1$ starts out discharged and so the <code>THRESHOLD</code> pin is low. This causes <code>OUT</code> to start out high.</p>
 
-<p><span class="num-circle">2</span>$C_1$ charges up through both resistors.
-<img src="/images/555-R1/C1_charging.png#c" height="335px"/></p>
+<p><span class="num-circle">2</span>$C_1$ charges up through both resistors.</p>
+
+<p><img src="/images/555-R1/C1_charging_padded.png#c" alt="C1 charging up through R1 and R2" /></p>
 
 <p><span class="num-circle">3</span>$C_1$ evenutally brings <code>THRESHOLD</code> up to ${2}/{3}\ V_{CC}$, and so the <code>OUT</code> pin goes low.</p>
 
 <p><span class="num-circle">4</span><code>OUT</code> now acts as a ground, so $R_1$ and $R_2$ form a voltage divider. Since $C_1$ is connected to the output of the voltage divider, it will charge up to the value of the divider.</p>
 
-<p><img src="/images/555-R1/C1_volt_div.png#c" height="300px"/></p>
+<p><img src="/images/555-R1/C1_volt_div_padded.png#c" alt="R1 and R2 forming a voltage divider that determines what voltage C1 charges to" /></p>
 
 <p>We can easily calculate what the steady-state voltage of $C_1$ will be:
-$$ V_{C_1} = \frac{R_2}{R_1+R_2} \times V_{CC} = \frac{10^6Ω}{10^3Ω+10^6Ω} \times 5 \text{V} \approx 4.545 \text{ V} $$
+$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC} = \left(\frac{10^6Ω}{10^3Ω+10^6Ω}\right)\left(5\text{ V}\right)\approx 4.545 \text{ V} $$
 That explains why $C_1$ stabilizes at roughly $4.5\text{ V}$</p>
 
 <p><span class="num-circle">5</span>Now nothing will change. In order for the <code>OUT</code> pin to toggle, the <code>THRESHOLD</code> pin needs to reach ${1}/{3}\ V_{CC}$. Unfortunately, the voltage divider keeps $C_1$ at $4.5\text{ V}$.</p>
 
 <h1 id="a-first-attempt-at-a-fix">A First Attempt at a Fix</h1>
 
-<p>The fix appears to be simple: <span class="highlight">pick a value of $R_1$ such that $C_1$ stabilizes at a voltage below ${1}/{3}\ V_{CC}$</span></p>
+<p>Ok, so we just need to pick a value of $R_1$ such that $C_1$ stabilizes at a voltage below ${1}/{3}\ V_{CC}$. Mathematically, this means we need</p>
 
-<p>A nice choice would be $3\text{ MΩ}$. We can verify that this works by again calculating what the output of the voltage divider would be:</p>
+<p>$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC} &lt; \frac{1}{3}\ V_{CC} $$</p>
 
-<p>$$ \frac{1\text{ MΩ}}{3\text{ MΩ}+1\text{ MΩ}} \times V_{CC} = {1}/{4}\ V_{CC} &lt; {1}/{3}\ V_{CC} $$</p>
+<p>A little bit of algebra gives us our constraint: <span class="highlight">in order for the circuit to oscillate, we need $R_1&gt;2\,R_2 $</span></p>
 
-<p>It&rsquo;s worth noting that $C_1$&rsquo;s voltage won&rsquo;t ever actually reach ${1}/{4}\ V_{CC}$ since as soon as it reaches ${1}/{3}\ V_{CC}$, the <code>OUT</code> pin will become high and the capacitor will start charging again.</p>
+<p>Since in our circuit $R_2=1\text{ MΩ}$, a nice choice for $R_1$ would be $3\text{ MΩ}$. I used this new value of $R_1$ in my circuit and tested it out:</p>
 
-<p>I used the new value of $R_1$ and tested out the circuit:</p>
-
-<p><img src="/images/555-R1/555_3M_animation.gif#c" height="325px"/>
+<p><img src="/images/555-R1/555_3M_animation.gif#c" alt="demonstration of 555 astable circuit using 3 mega ohms for R1" />
 <div class="figure-caption">The duty cycle doesn&rsquo;t seem quite right...</div></p>
 
-<p>I was &ldquo;done&rdquo; in the sense that I at least now have a $2\text{-ish Hz}$ wave (I checked by timing it with a stopwatch), but the pulsing didn&rsquo;t look symmetric. To test this hunch, I simulated the circuit with $R_1=3\text{ MΩ}$ and got the following graph:</p>
+<p>Eh... I mean it&rsquo;s a $2\text{-ish Hz}$ wave (I checked by timing it with a stopwatch), but the pulsing doesn&rsquo;t look symmetric...</p>
 
-<p><img src="/images/555-R1/graph_3m.png#c" height="400px"/>
+<p>To confirm my suspicion, I simulated the circuit with $R_1=3\text{ MΩ}$ and got the following graph:</p>
+
+<p><img src="/images/555-R1/graph_3m.png#c" alt="simulation of 555 astable circuit using 3 mega ohms for R1" />
 <div class="figure-caption">Simulation shows the capacitor waveform (green) is asymmetric</div></p>
 
-<p>Well, that most certainly is <strong>not</strong> a 50% duty cycle! 😠 It seems that $C_1$ spends more time discharging than it does charging. Weird...</p>
+<p>Well, that most certainly is <strong>not</strong> a 50% duty cycle! It seems that $C_1$ spends more time discharging than it does charging...</p>
 
 <h1 id="why-is-charging-quicker-than-discharging">Why Is Charging Quicker Than Discharging?</h1>
 
-<p>Let&rsquo;s look at just the charging phase for a second since what we&rsquo;ll discover generalizes pretty easily to the discharging phase.</p>
+<p>Let&rsquo;s look at just the charging phase for a second. We&rsquo;ll call the voltage that the capacitor is trying to charge up to the <strong>target voltage</strong>.</p>
 
-<p>Capacitors charge according to exponential functions, which means that whatever voltage they&rsquo;re trying to charge to, what we will from now on will refer to as the <strong>target voltage</strong>, they&rsquo;ll approach <em>asymptotically</em>. So they&rsquo;ll never quite reach that voltage, and in fact, the closer they get to that voltage, the <em>slower</em> they&rsquo;ll charge.</p>
+<p>By the laws of physics, a capacitor charges up to the target voltage <strong>asymptotically</strong>. So not only will the capacitor voltage never quite reach the target voltage, but it will actually charge <strong>slower</strong> the closer it gets.</p>
 
-<p>Let&rsquo;s quickly recall that the charging phase ends when the capcitor hits the high cutoff voltage, ${2}/{3}\ V_{CC}\approx 3.33\text{ V}$. We&rsquo;ll now proceed by looking at two extremes.</p>
+<p>Let&rsquo;s consider a hypothetical setup where two capacitors, labeled $\text{A}$ and $\text{B}$, will be <strong>independently</strong> charging up from $0\text{ V}$. Suppose capacitor $\text{A}$ is trying to charge up to $1.001\text{ V}$ and capacitor $\text{B}$ is trying to charge up to $10^{6}\text{ V}$.</p>
 
-<p><span class="num-circle">1</span> What if the target voltage were <em>just</em> above the cutoff voltage, say at $3.34\text{ V}$? Well, when the capacitor voltage starts approaching the cutoff, it&rsquo;s basically starting to approach the target voltage as well. Remember that the closer the capacitor voltage is to the target voltage, the slower it charges. So the charging will start to slow down as it approaches the cutoff.</p>
+<p>Which capacitor will reach $1\text{ V}$ <strong>first</strong>?</p>
 
-<p><span class="num-circle">2</span> What if the capacitor were trying to charge up to a voltage <em>way</em> above the cutoff, say $10^6\text{ V}$? Well assuming your breadboard doesn&rsquo;t melt, the capacitor would reach the cutoff pretty quick. Why? Well the fastest part of the charging is when you&rsquo;re really far from the target voltage, and $3.33\text{ V}$ is pretty damn far from $10^6\text{ V}$!</p>
+<p>Well, as capacitor $\text{A}$&rsquo;s voltage starts approaching $1\text{ V}$, it&rsquo;s basically approaching its target voltage of $1.001\text{ V}$, so its charging will start to slow down rapidly. However, as capacitor $\text{B}$&rsquo;s voltage starts approaching $1\text{ V}$, it&rsquo;s still super far away from its target voltage of $10^{6}\text{ V}$, so its charging barely slows down.</p>
 
-<p>You should kinda be able to interpolate what happens in between these two cases. Note that all of what I&rsquo;ve just said applies to the discharging phase too.</p>
+<p>So <strong>capacitor $\text{B}$</strong> will reach $1\text{ V}$ first!</p>
 
-<p>A graph might be helpful here (after all, a picture is worth a thousand words). The x-axis represents time and the y-axis represents voltage. The blue curve is the voltage of $C_1$ during the charging phase while the red curve is the voltage of $C_1$ during the discharging phase. The purple dotted lines are the target voltages, and the black lines are the high/low cutoff voltages.</p>
+<p>What we&rsquo;ve just reasoned out is that <span class="highlight">the capacitor with the bigger gap between the target voltage and the cutoff voltage will charge the fastest.</span></p>
 
-<p><img src="/images/555-R1/capacitor_graph.png#c" height="350px"/>
-<div class="figure-caption">The discharge phase takes longer than the charging phase because the low cutoff voltage is closer to the discharging target voltage</div></p>
+<hr />
 
-<p>Notice how the discharge target voltage is <em>really close</em> to the low cutoff voltage, so the discharge curve flattens out as it approaches the low cutoff voltage, slowing down, causing it to take longer.</p>
+<p><strong>Note:</strong> A capacitor <em>discharges</em> asymptotically as well, so these principles apply to a discharging capacitor just the same. That is, as a discharging capacitor&rsquo;s voltage approaches the target voltage, it starts to discharge slower.</p>
 
-<p>Ok, so we have our intuition, but let&rsquo;s crunch some numbers.</p>
+<p>Furthermore, if we designed a similar experiment as previously described but with two discharging capacitors, we would also find that the capacitor with the bigger gap between the target voltage and the cutoff voltage will discharge the fastest.</p>
 
-<p>First up, <strong>how far is the charging target voltage from the high cutoff voltage?</strong> The high cutoff voltage is ${2}/{3}\ V_{CC}$, and the capacitor is trying to charge up to $V_{CC}$. So the gap is ${1}/{3}\ V_{CC}\approx$<span class="highlight">$1.67\text{ V}$</span></p>
+<hr />
 
-<p>Up next, <strong>how far is the discharging target voltage from the low cutoff voltage?</strong> The low cutoff voltage is ${1}/{3}\ V_{CC}$. The voltage the capacitor is trying to discharge down to is given by</p>
+<p>Let&rsquo;s crunch some numbers to get a sense of how our circuit fares.</p>
 
-<p>$$ \frac{R_2}{R_1+R_2} \times V_{CC} = \frac{1\text{ MΩ}}{3\text{ MΩ}+1\text{ MΩ}} \times V_{CC} = {1}/{4}V_{CC} $$</p>
+<p>First up, <strong>how big is the gap between the charging target voltage and the high cutoff voltage?</strong> The high cutoff voltage is ${2}/{3}\ V_{CC}$, and the capacitor is trying to charge up to $V_{CC}$. So the gap is ${1}/{3}\ V_{CC}\approx$<span class="highlight">$1.67\text{ V}$</span></p>
+
+<p>Up next, <strong>how big is the gap between the discharging target voltage and the low cutoff voltage?</strong> The low cutoff voltage is ${1}/{3}\ V_{CC}$. The voltage the capacitor is trying to discharge down to is given by</p>
+
+<p>$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC} = \left(\frac{1\text{ MΩ}}{3\text{ MΩ}+1\text{ MΩ}}\right) V_{CC} = \frac{1}{4}\,V_{CC} $$</p>
 
 <p>Thus, the gap is ${1}/{12}\ V_{CC}\approx$<span class="highlight">$0.42\text{ V}$</span></p>
 
-<p>To fix the issue, we want the charging and discharging phases to behave about the same, which means we need these gaps to be about the same.</p>
+<p>Since the gap between charging target voltage and the high cutoff voltage is <strong>bigger</strong> than the gap between the discharging target voltage and the low cutoff voltage, charging is <strong>faster</strong>.</p>
 
-<h1 id="a-naive-fix">A Naive Fix</h1>
+<p>As a visual aid, let&rsquo;s look at a graph showing the charging and discharging phases of $C_1$. Real quick though, <strong>let&rsquo;s change the discharging target voltage to $1.5\text{ V}$</strong>, which will decrease the gap between the discharging target voltage and the low cutoff voltage down to just $0.17\text{ V}$. <strong>This is just to make the effect of different sized gaps more visually apparent</strong>. It&rsquo;s worth pointing out that this situation corresponds to us using $R_1=2.33\text{ MΩ}$. This still satisfies the condition that $R_1&gt;2\,R_2$, and so the circuit would still oscillate.</p>
 
-<p>By this logic, the solution then is to move the discharge target voltage to be as close to $0\text{ V}$ as we can. That way the distance between the low cutoff voltage and the discharge target voltage will <em>also</em> be ${1}/{3}\ V_{CC}$.</p>
+<p>Anyways, here&rsquo;s the various parts of the graph:</p>
+
+<ul>
+<li>The <strong>x-axis</strong> represents <strong>time</strong> and the <strong>y-axis</strong> represents <strong>voltage</strong></li>
+<li>The <strong>blue curve</strong> is the voltage of $C_1$ during the <strong>charging</strong> phase</li>
+<li>The <strong>red curve</strong> is the voltage of $C_1$ during the <strong>discharging</strong> phase</li>
+<li>The <strong>black lines</strong> are the charging and discharging <strong>cutoff voltages</strong> and are at ${2}/{3}\ V_{CC}$ and ${1}/{3}\ V_{CC}$ respectively</li>
+<li>The <strong>purple dotted lines</strong> are the charging and discharging <strong>target voltages</strong> and are at $V_{CC}=5\text{ V}$ and $1.5\text{ V}$ (remember we changed this) respectively</li>
+<li><strong>Both phases start at $t=0$</strong></li>
+<li>The <strong>green X&rsquo;s</strong> show when the <strong>capacitors hit their cutoffs</strong>, i.e. when the phases end</li>
+</ul>
+
+<p><img src="/images/555-R1/capacitor_graph.png#c" alt="graph showing the asymmetry between the charging and discharging phases" />
+<div class="figure-caption">The discharge phase takes longer than the charging phase because the low cutoff voltage is closer to the discharging target voltage</div></p>
+
+<p>It should now be easy to see that as the red curve approaches the low cutoff voltage, it&rsquo;s approaching the low target voltage as well, making it flatten out and slow down. The blue curve, however, seems to plow right through the high cutoff voltage, hardly slowing down.</p>
+
+<h1 id="the-fix">The Fix</h1>
+
+<p>The obvious solution is to move the discharge target voltage to be as close to $0\text{ V}$ as we can. That way the gap between the low cutoff voltage and the discharge target voltage will <em>also</em> be ${1}/{3}\ V_{CC}$.</p>
 
 <p>The discharge target voltage is given by the voltage divider mentioned just a bit ago. To make the formula go to $0\text{ V}$, we can have $R_1$ go to $\infty\text{ Ω}$.</p>
 
-<p>Of course, $\infty\text{ Ω}$ is not a resistor value that I have in my box, but basically we just need to make $R_1$ <em>really, really</em> big.</p>
+<p>Of course, $\infty\text{ Ω}$ is not a resistor value that I have in my box, but the gist is that <span class="highlight">we need to make $R_1$ <em>really, really</em> big</span>.</p>
 
-<p>Here&rsquo;s a GIF (or GIF if you prefer that pronounciation) showing how increasing the value of $R_1$ makes the waveform look more like the waveform we want.</p>
+<p>Here&rsquo;s a GIF showing how increasing the value of $R_1$ makes the waveform look more like what we want.</p>
 
-<p><img src="/images/555-R1/converge.gif#c" height="400px"/>
+<p><img src="/images/555-R1/converge.gif#c" alt="animation showing how increasing the value of R1 improves the waveform" />
 <div class="figure-caption">Simulating various values of $R_1$</div></p>
 
-<p>One thing that should really pop out from the GIF is that $R_1$ doesn&rsquo;t just affect the duty cycle of the wave, <em>it affects the frequency too</em>. So it looks like having a large $R_1$ is doubly important to meeting the specifications.</p>
+<p>One thing that should really pop out from the GIF is that $R_1$ doesn&rsquo;t just affect the duty cycle of the wave, <strong>it affects the frequency too</strong>. So having a large $R_1$ is <em>doubly</em> important to meeting the specifications.</p>
 
-<h1 id="a-better-fix">A Better Fix</h1>
+<p>Looks like having $R_1 = 50\text{ MΩ}$ would give us a good-looking wave.</p>
 
-<p>Based on the simulations, having $R_1 = 50\text{ MΩ}$ would be enough to get a good-looking wave. Of course, that&rsquo;s way too high a value to practically use in the circuit; I don&rsquo;t exactly have that sitting in my kit...</p>
+<h1 id="another-fix">Another Fix</h1>
 
-<p>Fortunately, there is another solution. Recall once again that the discharging target voltage is determined by a very familiar formula:</p>
+<p>One small problem: I don&rsquo;t have a $50\text{ MΩ}$ resistor sitting in my kit...</p>
 
-<p>$$ \frac{R_2}{R_1+R_2} \times V_{CC} $$</p>
+<p>Fortunately, there is something else we can do!</p>
 
-<p>I&rsquo;m sure you&rsquo;ve probably seen it too many times by now, but I really hate having to scroll all the way back because an equation is referenced by number.</p>
+<p>Recall (yet again) that the discharging target voltage for the capacitor, which we&rsquo;ll now call $V_{low}$, is determined by the formula:</p>
 
-<p>Anyways, we need to make the whole thing evaluate to $\sim 0\text{ V}$, and we originally thought to do that by taking $R_1$ to be a really large value. But really, all we need is for the denominator to be much larger than the numerator.</p>
+<p>$$ V_{low} = \left(\frac{R_2}{R_1+R_2}\right) V_{CC} $$</p>
 
-<p>Now, the numerator contains <em>only</em> $R_2$, and $R_1$ is <em>only</em> in the denominator. So, it would make sense that all we need is for $R_1 &gt;&gt; R_2$. So if the value of $R_2$ is small, we get some more breathing room for the value of $R_1$.</p>
+<p>We need $V_{low} \approx 0\text{ V}$, and we originally thought to do that by taking $R_1$ to be a really large value.</p>
 
-<p>To show this, I&rsquo;ve graphed the equation ${R_2}\,/\,{(R_1+R_2)}=k$ for various values of $k$. The discharging target voltage is given by $k\times V_{CC}$, so we want $k\approx 0$.</p>
+<p>But we can use a bit of algebra to instead write it like this:</p>
 
-<p>As an example, let&rsquo;s look at the red line. Every point on that line represents a combination of values of $R_1$ and $R_2$ that will give us $k=0.02$. If we pick a point with a lower value for $R_2$, we naturally end up with a lower value for $R_1$. This is true no matter what line (i.e. value of $k$) we look at.</p>
+<p>$$ V_{low} = \left(\frac{1}{1+\frac{R_1}{R_2}}\right) V_{CC} $$</p>
 
-<p><img src="/images/555-R1/vdiv_varied.png#c" height="450px"/>
-<div class="figure-caption">$R_1$ and $R_2$ are directly proportional</div></p>
+<p>If we want $V_{low}\rightarrow 0\text{ V}$, we need to make ${R_1}/{R_2}\rightarrow\infty$. To that end, we can either make $R_1\rightarrow\infty\text{ Ω}$ as we did earlier, or we can instead make $R_2\rightarrow 0\text{ Ω}$</p>
 
-<p>I should add that if you change $R_2$, you also need to change $C_1$ appropriately to keep the frequency of the circuit the same.</p>
+<p>So <span class="highlight">rather than <em>increasing</em> $R_1$, we can instead <em>decrease</em> $R_2$!</span></p>
 
-<p>To prove that this will work, here is an updated circuit where $R_2$ has been greatly lowered, $C_1$ has been adjusted as necessary, and $R_1$ is kept at $3\text{ MΩ}$:</p>
+<p>Of course, remember that $R_2$ and $C_1$ together control the timing of the oscillator with the formula</p>
 
-<p><img src="/images/555-R1/schematic_ideal.png#c" height="350px"/>
+<p>$$ f=\frac{1}{0.693(2R_2)C_1}\,\text{ Hz} $$</p>
+
+<p>From that formula we can clearly see that to keep $f$ the same, we just need to keep $R_2C_1$ the same. So if we <em>decrease</em> $R_2$ by some factor, we just need to <em>increase</em> $C_1$ by that <em>same</em> factor.</p>
+
+<h1 id="the-final-circuit">The Final Circuit</h1>
+
+<p>Let&rsquo;s put that to the test.</p>
+
+<p>Here is an updated circuit where the value of $R_2$ has been <em>reduced</em> by a factor of $10$, the value of $C_1$ has been <em>increased</em> by a factor of $10$, and the value of $R_1$ has been <em>kept</em> at $3\text{ MΩ}$:</p>
+
+<p><img src="/images/555-R1/schematic_ideal.png#c" alt="schematic of an ideal 555 50% duty cycle oscillator circuit" />
 <div class="figure-caption">A more ideal circuit, built using more convenient values of $R_1$ and $R_2$. The changed values are boxed in red</div></p>
 
-<p>And here is the corresponding simulation run:</p>
+<p>Here is the corresponding simulation run:</p>
 
-<p><img src="/images/555-R1/graph_ideal.png#c" height="450px"/>
+<p><img src="/images/555-R1/graph_ideal.png#c" alt="simulation of an ideal 555 50% duty cycle oscillator circuit" />
 <div class="figure-caption">The &ldquo;perfect&rdquo; waveform created using more convenient values of $R_1$ and $R_2$</div></p>
 
 <p>&nbsp;</p>
 
-<p>Now <em>that&rsquo;s</em> what I call a waveform!</p>
+<p>Now <em>that&rsquo;s</em> what I&rsquo;m talking about!</p>
 
 <h1 id="conclusion">Conclusion</h1>
 
-<p>&ldquo;Sufficiently high enough&rdquo; means much, much bigger than the other resistor. So don&rsquo;t use too large of an $R_2$ or you&rsquo;re gonna have to have an absolute unit for an $R_1$.</p>
+<p>The Electronics Tutorial article gave this advice for choosing $R_1$:</p>
+
+<blockquote>
+<p>Note that resistor R1 needs to be sufficiently high enough to ensure it does not interfere with the charging of the capacitor to produce the required 50% duty cycle</p>
+</blockquote>
+
+<p>Now we know what &ldquo;sufficiently high enough&rdquo; means:</p>
+
+<p><span class="num-circle">1</span> First and foremost, we need $R_1 &gt; 2\,R_2$ so that the 555 circuit actually oscillates.</p>
+
+<p><span class="num-circle">2</span> To actually get the $50\%$ duty cycle (and whatever frequency we configured the 555 to produce), we need $R_1$ to be <em>much</em> bigger than $R_2$. We saw in the last section that a factor of $30$ seems to work.</p>
+
+<p>As a rule of thumb, it helps to use a relatively small value of $R_2$ so that you don&rsquo;t need a humongous $R_1$.</p>
 
     </div>
   </div>
 </section>
-<section class="section">
+<footer class="section">
   <div class="container has-text-centered">
     <p>&copy; <a href="https://www.github.com/rchoudhary">Rutvik Choudhary</a> 2019</p>
     <p>Powered by <a href="https://gohugo.io/">Hugo</a> &amp; <a href="https://github.com/ribice/kiss">Kiss</a>.</p>
   </div>
-</section>
+</footer>
 
 
 </body>
