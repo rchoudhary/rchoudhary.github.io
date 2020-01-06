@@ -162,9 +162,11 @@
          alt="R1 and R2 forming a voltage divider that determines what voltage C1 charges to"/> 
 </figure>
 
-<p>We can easily calculate what the steady-state voltage of $C_1$ will be:
-$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC} = \left(\frac{10^6Ω}{10^3Ω+10^6Ω}\right)\left(5\text{ V}\right)\approx 4.545 \text{ V} $$
-That explains why $C_1$ stabilizes at roughly $4.5\text{ V}$</p>
+<p>We can easily calculate what the steady-state voltage of $C_1$ will be:</p>
+<p>$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC}$$
+$$ = \left(\frac{10^6Ω}{10^3Ω+10^6Ω}\right)\left(5\text{ V}\right)$$
+$$\approx 4.545 \text{ V}$$</p>
+<p>That explains why $C_1$ stabilizes at roughly $4.5\text{ V}$</p>
 <p><span class="num-circle">5</span>Now nothing will change. In order for the <code>OUT</code> pin to toggle, the <code>THRESHOLD</code> pin needs to reach ${1}/{3}\,V_{CC}$. Unfortunately, the voltage divider keeps $C_1$ at $4.5\text{ V}$.</p>
 <h1 id="a-first-attempt-at-a-fix">A First Attempt at a Fix</h1>
 <p>Ok, so we just need to pick a value of $R_1$ such that $C_1$ stabilizes at a voltage below ${1}/{3}\,V_{CC}$. Mathematically, this means we need</p>
@@ -209,7 +211,9 @@ That explains why $C_1$ stabilizes at roughly $4.5\text{ V}$</p>
 <p>Let's crunch some numbers to get a sense of how our circuit fares.</p>
 <p>First up, <strong>how big is the gap between the charging asymptote and the high cutoff voltage?</strong> The high cutoff voltage is ${2}/{3}\,V_{CC}$, and the capacitor is trying to charge up to $V_{CC}$. So the gap is ${1}/{3}\,V_{CC}\approx 1.67\text{ V}$</p>
 <p>Up next, <strong>how big is the gap between the discharging asymptote and the low cutoff voltage?</strong> The low cutoff voltage is ${1}/{3}\,V_{CC}$. The voltage that the capacitor is trying to discharge down to is given by</p>
-<p>$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC} = \left(\frac{1\text{ MΩ}}{3\text{ MΩ}+1\text{ MΩ}}\right) V_{CC} = \frac{1}{4}\,V_{CC} $$</p>
+<p>$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC} $$
+$$ = \left(\frac{1\text{ MΩ}}{3\text{ MΩ}+1\text{ MΩ}}\right) V_{CC} $$
+$$ = \frac{1}{4}\,V_{CC} $$</p>
 <p>Thus, the gap is ${1}/{12}\,V_{CC}\approx 0.42\text{ V}$</p>
 <p>Since the gap between charging asymptote and the high cutoff voltage is <strong>bigger</strong> than the gap between the discharging asymptote and the low cutoff voltage, charging is <strong>faster</strong>.</p>
 <p>Note that the gaps between the starting voltages and the cutoffs are both ${1}/{3}\,V_{CC}$, so this comparison/conclusion is valid.</p>
