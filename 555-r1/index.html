@@ -65,7 +65,19 @@
       <h1 id="summary">Summary</h1>
       <p>While building a 555 astable timer circuit, I noticed that the value of a seemingly unrelated resistor was actually of crucial importance to the overall functionality. Using simple circuit analysis and simulation, I got to the bottom of why exactly this resistor matters: it controls the asymptotic behavior of a timing capacitor.</p>
       <h1 id="toc">Table of Contents</h1>
-      <nav id="TableOfContents"></nav>
+      <nav id="TableOfContents">
+  <ol>
+    <li><a href="#the-setup">The Setup</a></li>
+    <li><a href="#background-reading">Background Reading</a></li>
+    <li><a href="#debugging-the-circuit">Debugging the Circuit</a></li>
+    <li><a href="#a-first-attempt-at-a-fix">A First Attempt at a Fix</a></li>
+    <li><a href="#why-is-charging-quicker-than-discharging">Why Is Charging Quicker Than Discharging?</a></li>
+    <li><a href="#the-fix">The Fix</a></li>
+    <li><a href="#another-fix">Another Fix</a></li>
+    <li><a href="#the-final-circuit">The Final Circuit</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ol>
+</nav>
       <h1 id="the-setup">The Setup</h1>
 <p>I bought some 555 timers and figured I would make an LED blink. I decided a frequency of $2\text{ Hz}$ was a good target. I wanted a duty cycle of $50\%$ because to me that's most visually appealing.</p>
 <p>According to <a href="https://www.electronics-tutorials.ws/waveforms/555_oscillator.html">this tutorial</a>, all I needed to do was build this circuit:</p>
