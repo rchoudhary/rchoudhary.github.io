@@ -73,8 +73,6 @@
     <li><a href="#a-first-attempt-at-a-fix">A First Attempt at a Fix</a></li>
     <li><a href="#why-is-charging-quicker-than-discharging">Why Is Charging Quicker Than Discharging?</a></li>
     <li><a href="#the-fix">The Fix</a></li>
-    <li><a href="#another-fix">Another Fix</a></li>
-    <li><a href="#the-final-circuit">The Final Circuit</a></li>
     <li><a href="#conclusion">Conclusion</a></li>
   </ol>
 </nav>
@@ -232,58 +230,22 @@ $$ = \frac{1}{4}\,V_{CC} $$</p>
 <h1 id="the-fix">The Fix</h1>
 <p>The obvious solution is to move the discharge asymptote to be as close to $0\text{ V}$ as we can. That way the gap between the low cutoff voltage and the discharge asymptote will <em>also</em> be ${1}/{3}\,V_{CC}$.</p>
 <p>The discharge asymptote is given by the voltage divider mentioned just a bit ago. To make the formula go to $0\text{ V}$, we can have $R_1$ go to $\infty\text{ Ω}$.</p>
-<p>Of course, $\infty\text{ Ω}$ is not a resistor value that I have in my box, but the gist is that <span class="hl">we need to make $R_1$ <em>really, really</em> big</span>.</p>
-<p>Here's a GIF showing how increasing the value of $R_1$ makes the waveform look more like what we want.</p>
+<p>Of course, $\infty\text{ Ω}$ is not a resistor value that I have in my box. But all that means is that we just take $R_1$ out of the circuit!</p>
+<p>Here's a simulation of what would happen if we did such a dastardly thing!</p>
 <figure>
-    <img src="/images/555-R1/converge.gif#c"
-         alt="Animation showing how increasing the value of R1 improves the waveform"/> <figcaption>
-            <p>Simulating various values of $R_1$</p>
+    <img src="/images/555-R1/graph_r1_removed.png#c"
+         alt="Simulation of circuit with R1 removed"/> <figcaption>
+            <p>Simulation of circuit with R1 removed$</p>
         </figcaption>
 </figure>
 
-<p>One thing that should really pop out from the GIF is that <span class="hl">$R_1$ doesn't just affect the duty cycle of the wave, <strong>it affects the frequency too</strong></span>. So having a large $R_1$ is <em>doubly</em> important to meeting the specifications!</p>
-<p>Looks like having $R_1 = 50\text{ MΩ}$ would give us a good-looking wave.</p>
-<h1 id="another-fix">Another Fix</h1>
-<p>One small problem: I don't have a $50\text{ MΩ}$ resistor sitting in my kit&hellip;</p>
-<p>Fortunately, there is something <em>else</em> we can do!</p>
-<p>Recall (yet again) that the discharging asymptote for the capacitor is determined by the expression:</p>
-<p>$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC} $$</p>
-<p>We need that whole expression to be $\sim 0\text{ V}$, and we originally thought to do that by taking $R_1$ to be a really large value.</p>
-<p>But we can use a bit of algebra to instead write it like this:</p>
-<p>$$ \left(\frac{1}{1+\frac{R_1}{R_2}}\right) V_{CC} $$</p>
-<p>If we want to make the expression approach $0\text{ V}$, we need to make ${R_1}/{R_2}$ approach $\infty$. To that end, we can either make $R_1$ approach $\infty\text{ Ω}$ as we did earlier, <strong>OR</strong> we can instead make $R_2$ approach $0\text{ Ω}$</p>
-<p>So <span class="hl">rather than <em>increasing</em> $R_1$, we can instead <em>decrease</em> $R_2$ to get the same effect!</span></p>
-<p>Of course, remember that $R_2$ and $C_1$ together control the timing of the oscillator by the formula</p>
-<p>$$ f=\frac{1}{0.693(2R_2)C_1}\,\text{ Hz} $$</p>
-<p>We can clearly see that to keep $f$ the same, we need to keep $R_2C_1$ the same. So if we <em>decrease</em> $R_2$ by some factor, we just need to <em>increase</em> $C_1$ by that <em>same</em> factor.</p>
-<h1 id="the-final-circuit">The Final Circuit</h1>
-<p>Ok, let's try to make a better waveform <em>without</em> changing $R_1$</p>
-<p>Here is an updated circuit where the value of $R_2$ has been <em>reduced</em> by a factor of $10$, the value of $C_1$ has been <em>increased</em> by a factor of $10$ (remember, this is so that the timing stays the same), and the value of $R_1$ has been <em>kept</em> at $3\text{ MΩ}$:</p>
-<figure>
-    <img src="/images/555-R1/schematic_ideal.png#c"
-         alt="Schematic of an ideal 555 50% duty cycle oscillator circuit"/> <figcaption>
-            <p>A more ideal circuit, built using more convenient values of $R_1$ and $R_2$. The changed values are boxed in red</p>
-        </figcaption>
-</figure>
-
-<p>So now $R_1$ is a factor of $30$ greater than $R_2$. Here is the corresponding simulation run:</p>
-<figure>
-    <img src="/images/555-R1/graph_ideal.png#c"
-         alt="Simulation of an ideal 555 50% duty cycle oscillator circuit"/> <figcaption>
-            <p>The &ldquo;perfect&rdquo; waveform created using more convenient values of $R_1$ and $R_2$</p>
-        </figcaption>
-</figure>
-
-<p>Now <em>that's</em> what I'm talking about!</p>
+<p>What a nice waveform! ❤️</p>
 <h1 id="conclusion">Conclusion</h1>
 <p>The Electronics Tutorial article gave this advice for choosing $R_1$:</p>
 <blockquote>
 <p>Note that resistor R1 needs to be sufficiently high enough to ensure it does not interfere with the charging of the capacitor to produce the required 50% duty cycle</p>
 </blockquote>
-<p>Now we know what &ldquo;sufficiently high enough&rdquo; means:</p>
-<p><span class="num-circle">1</span> First and foremost, we need $R_1 &gt; 2\,R_2$ so that the 555 circuit actually oscillates.</p>
-<p><span class="num-circle">2</span> To actually get the $50\%$ duty cycle <strong>and</strong> to make sure we get the frequency we want, we need $R_1$ to be <em>much</em> bigger than $R_2$. We saw in the last section that a factor of $30$ seems to work.</p>
-<p>As a rule of thumb, it helps to use a relatively small value of $R_2$ so that you don't need a humongous $R_1$.</p>
+<p>Now we know what &ldquo;sufficiently high enough&rdquo; means: so big it's basically not there!  :)</p>
 
     </div>
   </div>
