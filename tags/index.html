@@ -11,7 +11,7 @@
 <meta property='og:description' content=''>
 <meta property='og:url' content='https://rchoudhary.github.io/tags/'>
 <meta property='og:site_name' content='Null Pointers'>
-<meta property='og:type' content='website'><meta property='article:section' content='Tags'><meta property='og:updated_time' content='2020-01-06T00:00:00-06:00'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
+<meta property='og:type' content='website'><meta property='article:section' content='Tags'><meta property='og:updated_time' content='2020-06-09T00:00:00-05:00'/><meta name='twitter:card' content='summary'><meta name='twitter:site' content='@'><meta name='twitter:creator' content='@'>
   
   <link rel="stylesheet" href="/css/style.css"/><link rel='stylesheet' href='https://rchoudhary.github.io/css/custom.css'><link rel="preload" href="/logo.png" as="image">
   <link rel="preload" href="/logo_dark.png" as="image">
@@ -24,16 +24,23 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,100italic,300italic,400italic,500italic,500,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-  </script>
   <script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path["a11y"] = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/extensions/a11y";
     MathJax.Hub.Config({
+      extensions: ["[a11y]/accessibility-menu.js"],
+      menuSettings: {
+        collapsible: true,
+        autocollapse: true,
+        explorer: true
+      },
       tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     });
   </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
 </head>
 <body style="display: block">
-<section class="section">
+<header class="section">
   <div class="container">
     <nav class="nav">
       <div class="nav-left">
@@ -41,6 +48,7 @@
             <h1>Null Pointers</h1>
         </a>
       </div>
+
       <div class="nav-right">
         <nav class="nav-item level is-mobile"></nav>
       </div>
@@ -49,7 +57,7 @@
     
 
   </div>
-</section>
+</header>
 
 <section class="section">
   <div class="container">

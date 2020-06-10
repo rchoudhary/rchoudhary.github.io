@@ -24,16 +24,23 @@
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,100italic,300italic,400italic,500italic,500,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-  </script>
   <script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path["a11y"] = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/extensions/a11y";
     MathJax.Hub.Config({
+      extensions: ["[a11y]/accessibility-menu.js"],
+      menuSettings: {
+        collapsible: true,
+        autocollapse: true,
+        explorer: true
+      },
       tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     });
   </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
 </head>
 <body style="display: block">
-<section class="section">
+<header class="section">
   <div class="container">
     <nav class="nav">
       <div class="nav-left">
@@ -41,6 +48,7 @@
             <h1>Null Pointers</h1>
         </a>
       </div>
+
       <div class="nav-right">
         <nav class="nav-item level is-mobile"></nav>
       </div>
@@ -49,9 +57,9 @@
     
 
   </div>
-</section>
+</header>
 
-<section class="section">
+<main class="section">
   <div class="container">
     <div class="subtitle tags is-6 is-pulled-right">
       
@@ -62,9 +70,8 @@
     <h1 class="title">Debugging a 555 Circuit</h1>
     
     <div class="content" id="content">
-      <h1 id="summary">Summary</h1>
       <p>While building a 555 astable timer circuit, I noticed that the value of a seemingly unrelated resistor was actually of crucial importance to the overall functionality. Using simple circuit analysis and simulation, I got to the bottom of why exactly this resistor matters: it controls the asymptotic behavior of a timing capacitor.</p>
-      <h1 id="toc">Table of Contents</h1>
+      <h2 id="toc">Table of Contents</h1>
       <nav id="TableOfContents">
   <ol>
     <li><a href="#the-setup">The Setup</a></li>
@@ -76,7 +83,7 @@
     <li><a href="#conclusion">Conclusion</a></li>
   </ol>
 </nav>
-      <h1 id="the-setup">The Setup</h1>
+      <h2 id="the-setup">The Setup</h2>
 <p>I bought some 555 timers and figured I would make an LED blink. I decided a frequency of $2\text{ Hz}$ was a good target. I wanted a duty cycle of $50\%$ because to me that's most visually appealing.</p>
 <p>According to <a href="https://www.electronics-tutorials.ws/waveforms/555_oscillator.html">this tutorial</a>, all I needed to do was build this circuit:</p>
 <figure>
@@ -125,14 +132,14 @@
 
 <p>I double- and triple-checked the wiring, but couldn't find anything wrong :(</p>
 <p>I figured just mindlessly quadruple-checking was gonna be useless. It was time for some good ol&rsquo; circuit analysis!</p>
-<h1 id="background-reading">Background Reading</h1>
+<h2 id="background-reading">Background Reading</h2>
 <p>In case you're unfamiliar with the astable oscillator configuration of the 555, this is a pretty good video to watch. <strong>The relevant part starts at 6:54.</strong> The circuit the person goes through is slightly different than the one I'm using, but it's close enough to get the point of how the 555 works.</p>
 
 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
   <iframe src="https://www.youtube.com/embed/i0SNb__dkYI" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
 </div>
 
-<h1 id="debugging-the-circuit">Debugging the Circuit</h1>
+<h2 id="debugging-the-circuit">Debugging the Circuit</h2>
 <p>Unfortunately, I didn't have an oscilloscope lying around (on account of them being expensive), so I settled for simulation using <a href="http://www.analog.com/en/design-center/design-tools-and-calculators/ltspice-simulator.html">LTSpice</a> (which is free).</p>
 <p>In LTSpice I created the schematic for my circuit:</p>
 <figure>
@@ -178,7 +185,7 @@ $$ = \left(\frac{10^6Ω}{10^3Ω+10^6Ω}\right)\left(5\text{ V}\right)$$
 $$\approx 4.545 \text{ V}$$</p>
 <p>That explains why $C_1$ stabilizes at roughly $4.5\text{ V}$</p>
 <p><span class="num-circle">5</span>Now nothing will change. In order for the <code>OUT</code> pin to toggle, the <code>THRESHOLD</code> pin needs to reach ${1}/{3}\,V_{CC}$. Unfortunately, the voltage divider keeps $C_1$ at $4.5\text{ V}$.</p>
-<h1 id="a-first-attempt-at-a-fix">A First Attempt at a Fix</h1>
+<h2 id="a-first-attempt-at-a-fix">A First Attempt at a Fix</h2>
 <p>Ok, so we just need to pick a value of $R_1$ such that $C_1$ stabilizes at a voltage below ${1}/{3}\,V_{CC}$. Mathematically, this means we need</p>
 <p>$$ \left(\frac{R_2}{R_1+R_2}\right) V_{CC} &lt; \frac{1}{3}\,V_{CC} $$</p>
 <p>A little bit of algebra gives us our constraint: <span class="hl">in order for the circuit to oscillate, we need $R_1&gt;2\,R_2 $</span></p>
@@ -200,7 +207,7 @@ $$\approx 4.545 \text{ V}$$</p>
 </figure>
 
 <p>Well, that most certainly is <strong>not</strong> a $50\%$ duty cycle! It seems that $C_1$ spends more time discharging than it does charging&hellip;</p>
-<h1 id="why-is-charging-quicker-than-discharging">Why Is Charging Quicker Than Discharging?</h1>
+<h2 id="why-is-charging-quicker-than-discharging">Why Is Charging Quicker Than Discharging?</h2>
 <p>By the laws of physics, a capacitor charges/discharges up to its target voltage <strong>asymptotically</strong>. So not only will the capacitor voltage never quite reach the target voltage, but it will actually charge/discharge <strong>slower</strong> the closer it gets.</p>
 <p>Thus if the asymptote is just past the cutoff voltage, the capacitor will start to slow down its charging/discharging as it approaches the cutoff. Of course, since the cutoff is before the asymptote, it is guaranteed to reach the cutoff; it just will take a relatively longer time.</p>
 <p>On the other hand, if the asymptote were way past the cutoff, the capacitor would reach the cutoff pretty quickly. This is because as the capacitor voltage approaches the cutoff, it's still quite far from the asymptote, so it slows down negligibly.</p>
@@ -227,7 +234,7 @@ $$ = \frac{1}{4}\,V_{CC} $$</p>
 <p>Thus, the gap is ${1}/{12}\,V_{CC}\approx 0.42\text{ V}$</p>
 <p>Since the gap between charging asymptote and the high cutoff voltage is <strong>bigger</strong> than the gap between the discharging asymptote and the low cutoff voltage, charging is <strong>faster</strong>.</p>
 <p>Note that the gaps between the starting voltages and the cutoffs are both ${1}/{3}\,V_{CC}$, so this comparison/conclusion is valid.</p>
-<h1 id="the-fix">The Fix</h1>
+<h2 id="the-fix">The Fix</h2>
 <p>The obvious solution is to move the discharge asymptote to be as close to $0\text{ V}$ as we can. That way the gap between the low cutoff voltage and the discharge asymptote will <em>also</em> be ${1}/{3}\,V_{CC}$.</p>
 <p>The discharge asymptote is given by the voltage divider mentioned just a bit ago. To make the formula go to $0\text{ V}$, we can have $R_1$ go to $\infty\text{ Ω}$.</p>
 <p>Of course, $\infty\text{ Ω}$ is not a resistor value that I have in my box. But all that means is that we just take $R_1$ out of the circuit!</p>
@@ -240,7 +247,7 @@ $$ = \frac{1}{4}\,V_{CC} $$</p>
 </figure>
 
 <p>What a nice waveform! ❤️</p>
-<h1 id="conclusion">Conclusion</h1>
+<h2 id="conclusion">Conclusion</h2>
 <p>The Electronics Tutorial article gave this advice for choosing $R_1$:</p>
 <blockquote>
 <p>Note that resistor R1 needs to be sufficiently high enough to ensure it does not interfere with the charging of the capacitor to produce the required 50% duty cycle</p>
@@ -249,7 +256,7 @@ $$ = \frac{1}{4}\,V_{CC} $$</p>
 
     </div>
   </div>
-</section>
+</main>
 <footer class="section">
   <div class="container has-text-centered">
     <p>&copy; <a href="https://www.github.com/">Rutvik Choudhary</a> 2020</p>
